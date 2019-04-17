@@ -14,7 +14,7 @@ if (Sys.getenv("id_rsa") != "" && ci()$get_branch() == "master") {
   get_stage("before_deploy") %>%
     add_step(step_setup_ssh())
 
-  option(warn = 2)
+  options(warn = 2)
   get_stage("deploy") %>%
     add_step(step_setup_push_deploy(
       path = file.path("~", "git", "drat"),
