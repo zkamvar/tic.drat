@@ -1,4 +1,4 @@
-do_package_checks()
+# do_package_checks()
 # bump
 os <- R.version$os
 if (grepl("linux", os)) {
@@ -17,10 +17,10 @@ if (Sys.getenv("id_rsa") != "" && ci()$get_branch() == "master") {
   options(warn = 2)
   get_stage("deploy") %>%
     add_step(step_setup_push_deploy(
-      path = file.path("~", "git", "drat"),
+      path = path.expand("~/git/drat"),
       branch = "master",
       remote = paste0("git@github.com:", gsub("/.*$", "/tic.drat.repo", ci()$get_slug()), ".git")
     )) %>%
     add_step(step_add_to_drat()) %>%
-    add_step(step_do_push_deploy(path = file.path("~", "git", "drat")))
+    add_step(step_do_push_deploy(path = path.expand("~/git/drat")))
 }
