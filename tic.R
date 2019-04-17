@@ -1,9 +1,5 @@
-# do_package_checks()
-# bump
-os <- R.version$os
-if (grepl("linux", os)) {
-  msg <- "Deploy"
-}
+
+do_package_checks()
 
 if (Sys.getenv("id_rsa") != "" && ci()$get_branch() == "master") {
   # pkgdown documentation can be built optionally. Other example criteria:
@@ -14,13 +10,12 @@ if (Sys.getenv("id_rsa") != "" && ci()$get_branch() == "master") {
   get_stage("before_deploy") %>%
     add_step(step_setup_ssh())
 
-  options(warn = 2)
   get_stage("deploy") %>%
     add_step(step_setup_push_deploy(
-      path = path.expand("~/git/drat"),
+      path = "~/git/drat",
       branch = "master",
       remote = paste0("git@github.com:", gsub("/.*$", "/tic.drat.repo", ci()$get_slug()), ".git")
     )) %>%
     add_step(step_add_to_drat()) %>%
-    add_step(step_do_push_deploy(path = path.expand("~/git/drat")))
+    add_step(step_do_push_deploy(path = "~/git/drat"))
 }
